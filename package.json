@@ -1,0 +1,33 @@
+{
+  "name": "@gonzih/micro-learn",
+  "version": "0.1.0",
+  "description": "Daily 5-minute AI-powered micro-learning sessions with spaced repetition",
+  "license": "MIT",
+  "author": "Gonzih",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "micro-learn": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "better-sqlite3": "^9.4.3",
+    "node-cron": "^3.0.3",
+    "node-telegram-bot-api": "^0.66.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.8",
+    "@types/node": "^20.0.0",
+    "@types/node-cron": "^3.0.11",
+    "@types/node-telegram-bot-api": "^0.64.7",
+    "@types/uuid": "^9.0.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}

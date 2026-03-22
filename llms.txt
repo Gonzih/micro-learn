@@ -1,0 +1,71 @@
+# micro-learn
+
+> Daily 5-minute AI-powered micro-learning with spaced repetition
+
+micro-learn is an MCP (Model Context Protocol) server that delivers structured micro-learning sessions. It implements the SM-2 spaced repetition algorithm to schedule concept reviews at the optimal interval for long-term retention.
+
+## How to use micro-learn as an AI assistant
+
+When a user has micro-learn configured as an MCP tool, you can help them learn through daily 5-minute sessions. Here is the recommended interaction flow:
+
+### 1. First-time setup
+Call `subscribe` with a profileId and domain. If the user hasn't specified one, suggest appropriate domains based on their interests. Available domains include system-design, financial-literacy, mental-health-literacy, public-speaking, climate-literacy, algorithms, security, cloud-architecture, ai-ml-basics, startup-fundamentals, marketing-growth, negotiation, product-management, nutrition-science, first-aid-refresher, contract-basics, privacy-law, employment-law, writing-craft, spanish-professional, japanese-basics, mandarin-basics, biotech-basics, physics-intuition, management-101, decision-making, emotional-intelligence.
+
+### 2. Daily learning session
+1. Call `get_daily_lesson` to retrieve today's lesson
+2. Present the lesson content to the user in a readable format:
+   - Start with the **Hook** to create curiosity
+   - Present the **Core Concept** as the main teaching
+   - Share the **Applied Example** for concrete grounding
+   - Ask the **Recall Question** — let the user answer before showing the takeaway
+   - Ask the **Application Question** for deeper engagement
+   - Close with the **Key Takeaway**
+3. After the user engages with the material, call `rate_lesson` with their self-assessment (know/fuzzy/forgot)
+
+### 3. Ongoing support
+- Use `get_progress` to show streak and retention data — celebrate milestones
+- Use `get_upcoming_reviews` to preview what's coming
+- Use `search_concept` when users ask about a specific topic
+
+## Rating guidance
+
+Help users rate honestly:
+- **know**: Could explain the concept to someone else with confidence
+- **fuzzy**: Understood it while reading but couldn't fully recall or explain it
+- **forgot**: Couldn't remember it or found it confusing
+
+Honest rating is essential — the spaced repetition algorithm only works if ratings reflect true recall.
+
+## Lesson format
+
+Each lesson has:
+- `hook`: Surprising fact or counter-intuitive question to create curiosity
+- `coreConcept`: Core 2-minute explanation, usually with an analogy
+- `appliedExample`: Real-world case study, data, or concrete application
+- `questionRecall`: Tests memory of the core concept
+- `questionApplication`: Tests ability to apply the concept to a new scenario
+- `keyTakeaway`: Single most important thing to remember
+
+## Spaced repetition behavior
+
+- **know**: Next review in `max(3, current_interval × ease_factor)` days
+- **fuzzy**: Next review tomorrow
+- **forgot**: Next review tomorrow, ease factor decreases
+- After 3+ correct reviews with interval > 7 days: concept marked as **learned**
+
+## Environment variables
+
+The server reads:
+- `MICRO_LEARN_PROFILE_ID`: default profile ID
+- `MICRO_LEARN_DOMAIN`: default domain
+- `MICRO_LEARN_REMINDER_TIME`: HH:MM reminder time
+- `MICRO_LEARN_DB`: path to SQLite database (default: ~/.micro-learn/learning.sqlite)
+- `TELEGRAM_BOT_TOKEN`: optional Telegram integration
+- `TELEGRAM_CHAT_ID`: optional Telegram chat ID
+
+## Source
+
+- Package: `@gonzih/micro-learn`
+- Protocol: Model Context Protocol (MCP) over stdio
+- Database: SQLite via better-sqlite3
+- License: MIT
